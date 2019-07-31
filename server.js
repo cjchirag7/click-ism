@@ -10,6 +10,8 @@ var authenticate = require('./authenticate');
 const productRouter = require('./routes/api/productRouter');
 const userRouter = require('./routes/api/userRouter');
 const bidRouter = require('./routes/api/bidRouter');
+var favoriteRouter = require('./routes/api/favoriteRouter');
+
 const app= express();
 
 app.use(function(req, res, next) {
@@ -39,6 +41,7 @@ app.use(passport.initialize());
 app.use('/api/products',productRouter);
 app.use('/api/users',userRouter);
 app.use('/api/bids',bidRouter);
+app.use('/api/favorites',favoriteRouter);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
