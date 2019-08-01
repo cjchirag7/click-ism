@@ -33,14 +33,17 @@ all users will be able to see that product online )
 
 1. You can try logging in as an **admin** by entering the following credentials:
 
-* **username**: *Director*
-* **password**: *123pass*
+* **username**: *admin*
+* **password**: *pass123*
 
-2. You can also register yourself as a student and then login to view the options available to a student.
+2. You can also register yourself as a student and then login to view the options available to a student or use the following credentials:
+
+* **username**: *cjchirag7*
+* **password**: *cool1234*
 
 ## View live App
 
-Hosted at https://lib-manage.herokuapp.com/
+Hosted at **https://click-ism.herokuapp.com/**
 
 ## Tech Stack Used
 
