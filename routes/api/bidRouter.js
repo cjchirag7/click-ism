@@ -36,9 +36,9 @@ bidRouter.route('/')
     .then((requiredProduct)=>{
         Users.findById(req.body.bidder)
         .then((requiredUser)=>{
-         givenAmount=req.body.ammount;
+         givenAmount=req.body.amount;
          if(givenAmount<requiredProduct.price||givenAmount>requiredProduct.max_bid||(givenAmount-requiredProduct.price)%requiredProduct.incr!==0){
-         err = new Error(`Ensure the bid ammount exceeds the price of product and is within the limit of Max-Bid and incr 
+         err = new Error(`Ensure the bid amount exceeds the price of product and is within the limit of Max-Bid and incr 
          is valid`);
          err.status = 401;
          return next(err);
@@ -161,21 +161,21 @@ bidRouter.route('/:bidId')
     
     Products.findById(bid.product)
     .then((requiredProduct)=>{
-        givenAmount=req.body.ammount;
+        givenAmount=req.body.amount;
         if(!(bid.bidder===req.user._id)){
             err = new Error(`Unauthorised`);
             err.status = 401;
             return next(err);    
         }
         else if(givenAmount<requiredProduct.price||givenAmount>requiredProduct.max_bid||(givenAmount-requiredProduct.price)%requiredProduct.incr!==0){
-            err = new Error(`Ensure the bid ammount exceeds the price of product and is within the limit of Max-Bid and incr 
+            err = new Error(`Ensure the bid amount exceeds the price of product and is within the limit of Max-Bid and incr 
             is valid`);
             err.status = 401;
             return next(err);
     
         }
         Bid.findByIdAndUpdate(req.params.bidId,{
-            $set: {ammount: givenAmount}
+            $set: {amount: givenAmount}
         },{new: true})
         .populate('bidder')
         .populate('product')

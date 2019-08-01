@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-require('mongoose-currency').loadType(mongoose);
-const Currency = mongoose.Types.Currency;
 
 const bidSchema = new Schema({
     bidder: {
@@ -14,8 +12,8 @@ const bidSchema = new Schema({
         ref: 'Product',
         required: true
     },
-    ammount: {
-        type: Currency,
+    amount: {
+        type: Number,
         required: true,
         min: 10
     }

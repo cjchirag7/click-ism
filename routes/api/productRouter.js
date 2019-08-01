@@ -115,7 +115,7 @@ productRouter.route('/:productId')
 .catch((err) => res.status(400).json({success: false}));
 })
 
-.delete(cors.corsWithOptions,authenticate.verifyUser,authenticate.verifyAdmin,(req, res, next) => {
+.delete(cors.corsWithOptions,authenticate.verifyUser,(req, res, next) => {
     Products.findByIdAndRemove(req.params.productId)
     .then((resp) => {
         res.statusCode = 200;
