@@ -12,7 +12,7 @@ router.use(bodyParser.json());
 /* GET users listing. */
 router.options('*', cors.corsWithOptions, (req, res) => { res.sendStatus(200); 
   res.setHeader('Access-Control-Allow-Credentials', 'true');} )
-router.get('/', cors.corsWithOptions,
+router.get('/', cors.corsWithOptions, authenticate.verifyUser,
                   function(req, res, next) {
                     User.find({})
                       .then((users)=>{
