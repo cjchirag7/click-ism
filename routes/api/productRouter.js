@@ -141,5 +141,22 @@ productRouter.route('/approve/:productId')
     .catch((err)=>(next(err))) 
 })
 
+productRouter.route('/views/:productId')
+.options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); 
+    res.setHeader('Access-Control-Allow-Credentials', 'true')})
+.post(cors.corsWithOptions,(req, res, next) => {
+    console.log({views: req.body.views});
+    Products.findByIdAndUpdate(req.params.productId,{
+        $set: {views: req.body.views}
+    },{new: true})
+    .populate('owner')
+    .then((product)=>{
+        res.statusCode=200;
+        res.setHeader('Content-Type','application/json');
+        res.json(product);
+    },(err)=>(next(err)))
+    .catch((err)=>(next(err))) 
+})
+
 
 module.exports = productRouter;
