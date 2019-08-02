@@ -129,7 +129,7 @@ class Header extends Component{
                                 </NavLink>
                                 </NavItem>
                                 <NavItem className="ml-2" onClick={this.toggleNav}>
-                                <NavLink className="nav-link text-warning" to="/bids">
+                                <NavLink className="nav-link text-warning" to="/favorites">
                                    <span className="fa fa-heart fa-lg"/> My favorites
                                 </NavLink>
                                 </NavItem>

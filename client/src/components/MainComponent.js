@@ -7,6 +7,7 @@ import Search from './SearchComponent';
 import ProductDetail from './ProductDetailComponent';
 import UserDetail from './UserDetailComponent';
 import Profile from './ProfileComponent';
+import Favorites from './FavoriteComponent';
 import {Switch,Route,Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {Modal,ModalBody,ModalHeader,Button, Label, Col, Row} from 'reactstrap';
@@ -57,7 +58,8 @@ class Main extends Component {
   componentDidMount() {
     this.props.fetchProducts();
     if(this.props.auth.isAuthenticated){
-      this.props.fetchBids(!this.props.auth.userinfo.admin);
+      this.props.fetchBids();
+      this.props.fetchFavorites();
     }
     if(this.props.auth.isAuthenticated&&this.props.auth.userinfo.admin){
       this.props.fetchUsers();
@@ -111,6 +113,12 @@ class Main extends Component {
           increaseView={this.props.increaseView}
           user={this.props.auth}
           addToView={this.addToView}
+          favorite={
+            this.props.auth.isAuthenticated?
+            ((this.props.favorites.favorites===null) ? true : this.props.favorites.favorites.dishes.some((dish) => dish._id === match.params.dishId))
+            : false
+          }
+          postFavorite={this.props.postFavorite}
           />
           );
       };
@@ -190,7 +198,15 @@ class Main extends Component {
                       <Route exact path='/home' component={() => <Home 
                       products={this.props.products.products}
                       productsLoading={this.props.products.isLoading}
-                      productsErrMess={this.props.products.errMess}/>} />
+                      productsErrMess={this.props.products.errMess}
+                      user={this.props.auth}
+                      favorites={
+                        this.props.auth.isAuthenticated?
+                        (this.props.favorites.favorites)
+                        : false
+                      }
+                      postFavorite={this.props.postFavorite}
+            />} />
                   <Route exact path='/search' component={() => <Search 
                       products={this.props.products.products}
                       productsLoading={this.props.products.isLoading}
@@ -210,7 +226,14 @@ class Main extends Component {
                       user={this.props.auth}
                       toggleEditModal={this.toggleEditModal}
                       toggleDeleteModal={this.toggleDeleteModal}
-                      changeSelected={this.changeSelected}/>}/>
+                      changeSelected={this.changeSelected}
+                      favorites={
+                        this.props.auth.isAuthenticated?
+                        (this.props.favorites.favorites)
+                        : false
+                      }
+                      postFavorite={this.props.postFavorite}
+/>}/>
                       
                       <Route exact path='/stationary' component={() => <Products
                       products={this.props.products.products.filter((product)=>(product.cat==="Stationary"))}
@@ -220,7 +243,14 @@ class Main extends Component {
                       user={this.props.auth}
                       toggleEditModal={this.toggleEditModal}
                       toggleDeleteModal={this.toggleDeleteModal}
-                      changeSelected={this.changeSelected}/>}/>
+                      changeSelected={this.changeSelected}
+                      favorites={
+                        this.props.auth.isAuthenticated?
+                        (this.props.favorites.favorites)
+                        : false
+                      }
+                      postFavorite={this.props.postFavorite}
+/>}/>
 
 <Route exact path='/electronics' component={() => <Products
                       products={this.props.products.products.filter((product)=>(product.cat==="Electronic Gadgets"))}
@@ -230,7 +260,14 @@ class Main extends Component {
                       user={this.props.auth}
                       toggleEditModal={this.toggleEditModal}
                       toggleDeleteModal={this.toggleDeleteModal}
-                      changeSelected={this.changeSelected}/>}/>
+                      changeSelected={this.changeSelected}
+                      favorites={
+                        this.props.auth.isAuthenticated?
+                        (this.props.favorites.favorites)
+                        : false
+                      }
+                      postFavorite={this.props.postFavorite}
+/>}/>
 
 <Route exact path='/bicycles' component={() => <Products
                       products={this.props.products.products.filter((product)=>(product.cat==="Bicycles"))}
@@ -240,7 +277,14 @@ class Main extends Component {
                       user={this.props.auth}
                       toggleEditModal={this.toggleEditModal}
                       toggleDeleteModal={this.toggleDeleteModal}
-                      changeSelected={this.changeSelected}/>}/>
+                      changeSelected={this.changeSelected}
+                      favorites={
+                        this.props.auth.isAuthenticated?
+                        (this.props.favorites.favorites)
+                        : false
+                      }
+                      postFavorite={this.props.postFavorite}
+/>}/>
 
 <Route exact path='/clothes' component={() => <Products
                       products={this.props.products.products.filter((product)=>(product.cat==="Clothes"))}
@@ -250,7 +294,14 @@ class Main extends Component {
                       user={this.props.auth}
                       toggleEditModal={this.toggleEditModal}
                       toggleDeleteModal={this.toggleDeleteModal}
-                      changeSelected={this.changeSelected}/>}/>
+                      changeSelected={this.changeSelected}
+                      favorites={
+                        this.props.auth.isAuthenticated?
+                        (this.props.favorites.favorites)
+                        : false
+                      }
+                      postFavorite={this.props.postFavorite}
+/>}/>
 
 <Route exact path='/sports' component={() => <Products
                       products={this.props.products.products.filter((product)=>(product.cat==="Sports"))}
@@ -260,7 +311,14 @@ class Main extends Component {
                       user={this.props.auth}
                       toggleEditModal={this.toggleEditModal}
                       toggleDeleteModal={this.toggleDeleteModal}
-                      changeSelected={this.changeSelected}/>}/>
+                      changeSelected={this.changeSelected}
+                      favorites={
+                        this.props.auth.isAuthenticated?
+                        (this.props.favorites.favorites)
+                        : false
+                      }
+                      postFavorite={this.props.postFavorite}
+/>}/>
 
 <Route exact path='/others' component={() => <Products
                       products={this.props.products.products.filter((product)=>(product.cat==="Others"))}
@@ -270,7 +328,14 @@ class Main extends Component {
                       user={this.props.auth}
                       toggleEditModal={this.toggleEditModal}
                       toggleDeleteModal={this.toggleDeleteModal}
-                      changeSelected={this.changeSelected}/>}/>
+                      changeSelected={this.changeSelected}
+                      favorites={
+                        this.props.auth.isAuthenticated?
+                        (this.props.favorites.favorites)
+                        : false
+                      }
+                      postFavorite={this.props.postFavorite}
+/>}/>
                       
                       <Route exact path='/products/:productId' component={ProductWithId} />
                       <Route path='/products/:productId/owner' component={OwnerProduct} />
@@ -327,9 +392,15 @@ class Main extends Component {
                       bids={this.props.bids}
                       auth={this.props.auth}
                       freezeBid={this.props.freezeBid}
-                     />} />*/
+                      />} />*/}
+                     <PrivateRouteCommon exact path="/favorites" component={() => <Favorites 
+                     favorites={this.props.favorites}
+                      deleteFavorite={this.props.deleteFavorite} 
+                      fetchFavorites={this.props.fetchFavorites}/>}
+
+                    />
                       <Route path='/users/:userId' component={UserWithId}/>
-                      /*<PrivateRouteAdmin path='/stats' component={() => <Stats
+                      {/*<PrivateRouteAdmin path='/stats' component={() => <Stats
                       bids={this.props.bids}
                       products={this.props.products.products}
                       productsLoading={this.props.products.isLoading}

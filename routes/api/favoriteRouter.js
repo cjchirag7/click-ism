@@ -46,7 +46,7 @@ favoriteRouter.route('/')
             }
             favorite.save()
              .then((favorite_unpopulated) => {
-                 Favorites.find({})
+                 Favorites.findOne({user: req.user._id})
                 .populate('user')
                 .populate('products')
                 .then((favorite)=>{
@@ -76,7 +76,7 @@ favoriteRouter.route('/')
                 }
                 favorite.save()
                 .then((favorite_unpopulated) => {
-                    Favorites.find({})
+                    Favorites.findOne({user: req.user._id})
                    .populate('user')
                    .populate('products')
                    .then((favorite)=>{
@@ -167,7 +167,7 @@ favoriteRouter.route('/:productId')
                 favorite.products.push(req.params.productId);
                 favorite.save()
                 .then((favorite_unpopulated) => {
-                    Favorites.find({})
+                    Favorites.findOne({user: req.user._id})
                    .populate('user')
                    .populate('products')
                    .then((favorite)=>{
@@ -192,10 +192,21 @@ favoriteRouter.route('/:productId')
                 user: req.user._id,
                 products: [req.params.productId]
             })
-            .then((favorite) => {
+            .then((favorite_unpopulated) => {
+                Favorites.findOne({user: req.user._id})
+                .populate('user')
+                .populate('products')
+                .then((favorite)=>{
+                
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(favorite);
+            },(err) => {
+                next(err);
+            })
+            .catch((err) => {
+                next(err);
+            });    
             }, (err) => {
                 next(err);
             })
@@ -223,7 +234,7 @@ favoriteRouter.route('/:productId')
                 favorite.products.splice(index, 1);
                 favorite.save()
                 .then((favorite_unpopulated) => {
-                    Favorites.find({})
+                    Favorites.findOne({user: req.user._id})
                    .populate('user')
                    .populate('products')
                    .then((favorite)=>{

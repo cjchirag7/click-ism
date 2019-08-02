@@ -59,7 +59,7 @@ render(){
              ):(<React.Fragment/>)}
             
             <br/> <p className="ml-auto text-success"> <b>{product.bid?(<React.Fragment>Bidding range : <span>&#8377;</span> {product.price} - {product.max_bid}</React.Fragment>):<React.Fragment><span>&#8377;</span> {product.price}</React.Fragment>}</b></p>
-             <p>Owner : {product.owner.firstname+' '+product.owner.lastname}</p>
+             <p>Owner : <Link to={`products/${product._id}/owner`}>{product.owner.firstname+' '+product.owner.lastname}</Link> </p>
             </ListGroupItem>        );
             else return (<React.Fragment/>);
     });

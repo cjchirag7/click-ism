@@ -76,11 +76,34 @@ class Home extends Component {
         const { activeIndex } = this.state;
         const featured=this.props.products.slice(0,3);
         const featuredCards=featured.map((product)=>{
+          let favorite;
+          if(!this.props.favorites||!this.props.favorites.products)
+            favorite=false;
+          else
+            favorite=this.props.favorites.products.some((p) => p._id === product._id);
             return (<div className="col-12 col-md-4">
           <Card>
-        <CardImg top width="100%" height="200"  src={'/uploads/'+product.images[0].slice(22)} />
-        <CardBody className="text-black">
-          <CardTitle className="text-danger"><b>{product.name}</b></CardTitle>
+        <CardImg top width="100%" height="200"  src={'/uploads/'+product.images[0].slice(22)} 
+        onMouseOver={e => {
+          if(product.images[1])
+          e.currentTarget.src = '/uploads/'+product.images[1].slice(22)}} 
+          onMouseOut={e => {
+            e.currentTarget.src = '/uploads/'+product.images[0].slice(22)}}   
+        />
+<CardBody className="text-black">
+          <CardTitle className="text-danger"><b>{product.name} &nbsp;&nbsp;
+
+          {(this.props.user.userinfo)?(          
+                                    (favorite) ?
+                                        <span className="fa fa-heart Option" onClick={() => favorite ? alert('Already favorite') : this.props.postFavorite(product._id)}></span>
+                                        : 
+                                        <span className="fa fa-heart-o Option" onClick={() => favorite ? alert('Already favorite') : this.props.postFavorite(product._id)}></span>
+                                    
+
+):(<React.Fragment/>)}
+          &nbsp; &nbsp;
+      
+          </b></CardTitle>
           <CardSubtitle className="text-success"><b>{product.bid?(<React.Fragment>Bidding range : <span>&#8377;</span> {product.price} - {product.max_bid}</React.Fragment>):<React.Fragment><span>&#8377;</span> {product.price}</React.Fragment>}</b></CardSubtitle>
           <CardText>{product.description.slice(0,100)+'....'}</CardText>
           <CardLink tag={Link} to={"/products/"+product._id} className="text-center">
