@@ -1,0 +1,88 @@
+.row-header{
+    margin:0px auto;
+    padding:0px auto;
+}
+
+body{
+    background: url(images/wallpaper.jpeg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+width: 100vw;
+}
+
+.row-content {
+    margin:0px auto;
+    padding: 30px 0px 50px 0px;
+}
+
+.brand{
+font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif; 
+font-weight: bold;
+}
+
+.footer{
+    background-color: rgb(225, 228, 49);
+    height: 25px;
+    margin: auto;
+  }
+
+
+  .home{
+      background-image: url('./images/wallpaper.jpeg');
+      min-height: 100vh;
+      min-width: 99vw;
+    }
+
+  .darkbg{
+      background-color: rgb(236, 56, 80);
+      opacity: 0.7;
+      color: white;
+      size: 4rem;
+  }
+
+  table, th, td {
+    border: 1px solid white;
+  }
+
+  table {
+      min-width: 40%
+  }
+
+  .heading{
+      margin-top: 60px;
+  }
+
+  .full{
+      min-height: 100vh;
+  }
+
+  .Option{
+      cursor: pointer;
+  }
+
+  .loading{
+min-height: 100vh;
+  }
+
+  img {
+    margin: auto;
+  }
+
+  .indicator {
+      color: yellow;
+      cursor: pointer;
+  }
+
+  .white-text {
+      color: whitesmoke;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      font-size: 1.1rem;
+  }
+
+  .text-black {
+      color: black;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.9rem;
+  }
