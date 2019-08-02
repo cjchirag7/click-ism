@@ -5,12 +5,23 @@ import {Row,Col, Card, CardText, CardHeader, CardFooter, CardBody, Carousel,
     CarouselIndicators} from 'reactstrap';
 import Loading from './LoadingComponent';
 import {Link} from 'react-router-dom';
-function RenderProduct({product,toggleEditModal,changeSelected,user}) {
+function RenderProduct({product,toggleEditModal,changeSelected,user,favorite,postFavorite}) {
     if (product != null)
         return(
         <Card>
        
-       <CardHeader tag="h3" className="text-danger"><b>{product.name}</b> &nbsp; &nbsp; &nbsp;&nbsp;
+       <CardHeader tag="h3" className="text-danger"><b>{product.name}</b> &nbsp; &nbsp;
+       {(user.userinfo)?(          
+                                    (favorite) ?
+                                        <span className="fa fa-heart Option" onClick={() => favorite ? alert('Already favorite') : postFavorite(product._id)}></span>
+                                        : 
+                                        <span className="fa fa-heart-o Option" onClick={() => favorite ? alert('Already favorite') : postFavorite(product._id)}></span>
+                                    
+
+):(<React.Fragment/>)}
+          &nbsp; &nbsp;
+        
+        &nbsp;&nbsp;
        {(user.userinfo&&(user.userinfo._id===product.owner._id))?(<span className="fa fa-pencil Option" onClick={()=>{changeSelected(product._id);toggleEditModal();}}/>):(<React.Fragment/>)}
        <div className="ml-auto text-success"><b>{product.bid?(<React.Fragment>Bidding range : <span>&#8377;</span> {product.price} - {product.max_bid}</React.Fragment>):<React.Fragment><span>&#8377;</span> {product.price}</React.Fragment>}</b></div>
         </CardHeader>
@@ -168,7 +179,9 @@ else
           <RenderProduct product={this.props.product} isAdmin={this.props.isAdmin}
                     toggleEditModal={this.props.toggleEditModal}
                     changeSelected={this.props.changeSelected}
-                    user={this.props.user}>
+                    user={this.props.user}
+                    postFavorite={this.props.postFavorite}
+                    favorite={this.props.favorite}>
               </RenderProduct>
 
         <br/>

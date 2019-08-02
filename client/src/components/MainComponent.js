@@ -115,7 +115,7 @@ class Main extends Component {
           addToView={this.addToView}
           favorite={
             this.props.auth.isAuthenticated?
-            ((this.props.favorites.favorites===null) ? true : this.props.favorites.favorites.dishes.some((dish) => dish._id === match.params.dishId))
+            ((this.props.favorites.favorites===null) ? true : this.props.favorites.favorites.products.some((product) => product._id === match.params.productId))
             : false
           }
           postFavorite={this.props.postFavorite}
