@@ -16,12 +16,12 @@ bidRouter.use(bodyParser.json());
 
 bidRouter.route('/')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-.get(cors.corsWithOptions, authenticate.verifyUser
-                ,authenticate.verifyAdmin,
+.get(cors.corsWithOptions, authenticate.verifyUser,
                   function(req, res, next) {
                     Bid.find({})
                     .populate('bidder')
                     .populate('product')
+                    .sort({amount: -1})
                       .then((bids)=>{
                           res.statusCode=200;
                           res.setHeader('Content-Type','application/json');
@@ -67,7 +67,7 @@ bidRouter.route('/')
                     return next(err);
                 }
             else {
-             Bids.create(req.body)
+             Bid.create(req.body)
                 .then((product)=>{
                     res.statusCode=200;
                     res.setHeader('Content-Type','application/json');
@@ -162,7 +162,8 @@ bidRouter.route('/:bidId')
     Products.findById(bid.product)
     .then((requiredProduct)=>{
         givenAmount=req.body.amount;
-        if(!(bid.bidder===req.user._id)){
+        if(!(bid.bidder.equals(req.user._id))){
+            console.log('\n'+bid.bidder+'   '+req.user._id);
             err = new Error(`Unauthorised`);
             err.status = 401;
             return next(err);    

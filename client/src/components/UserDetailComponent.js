@@ -27,7 +27,7 @@ render(){
     }
     else if (this.props.errMess) {
         return(
-            <div className="container loading">
+            <div className="container loading white-text">
                 <div className="row heading"> 
                     <div className="col-12">
                         <br/><br/><br/><br/>

@@ -43,10 +43,6 @@ class Home extends Component {
         this.onExited = this.onExited.bind(this);
     }
 
-    componentDidMount() {
-        window.scrollTo(0, 0)
-      }
-
       onExiting() {
         this.animating = true;
       }

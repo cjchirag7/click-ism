@@ -163,12 +163,16 @@ class Header extends Component{
                                      <span className="fa fa-clock-o fa-lg"/> Products pending
                                 </NavLink>
                                 </NavItem>
-                                <NavItem onClick={this.toggleNav} className="ml-2">
+                               {
+                                   /*
+                                 <NavItem onClick={this.toggleNav} className="ml-2">
                                 <NavLink className="nav-link text-warning" to="/stats">
                                    <span className="fa fa-info-circle fa-lg"/> Stats
                                 </NavLink>
                                 </NavItem>
-                              </React.Fragment>
+                             
+                                   */
+                               }  </React.Fragment>
                             ):
                             (<div/>)
                         }

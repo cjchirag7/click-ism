@@ -68,7 +68,8 @@ class Products extends Component {
               )
               :
               (
-                (this.props.productsLoading)?(<Loading />):((this.props.productsErrMess)?(<h3>{this.props.productsErrMess}</h3>):productsCards)
+                (this.props.productsLoading)?(<Loading />):((this.props.productsErrMess)?(<h3>{this.props.productsErrMess}</h3>):
+                ((this.props.products.length===0)?(<div className="justify-content-center"><br/><br/><br/><br/><h5 align="center">There are no products in this list.</h5></div>):productsCards))
     
               )
             }

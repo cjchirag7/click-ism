@@ -9,11 +9,12 @@ import UserDetail from './UserDetailComponent';
 import Profile from './ProfileComponent';
 import Favorites from './FavoriteComponent';
 import UploadItem from './UploadItemComponent';
+import History from './HistoryComponent';
 import {Switch,Route,Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {Modal,ModalBody,ModalHeader,Button, Label, Col, Row} from 'reactstrap';
-import { postProduct, fetchProducts, editProduct, deleteProduct, increaseView, loginUser, logoutUser, 
-  registerUser, editUser, editPassword, postBid, freezeBid, fetchBids, fetchUsers, fetchFavorites, postFavorite, deleteFavorite} from '../redux/ActionCreators';
+import { postProduct, fetchProducts, editBid, editProduct, deleteProduct, increaseView, loginUser, logoutUser, 
+  registerUser, editUser, editPassword, postBid, approveProduct, fetchBids, fetchUsers, fetchFavorites, postFavorite, deleteFavorite} from '../redux/ActionCreators';
 import { Control, LocalForm, Errors  } from 'react-redux-form';
 
 const required = (val) => val && val.length;
@@ -47,11 +48,12 @@ const mapDispatchToProps = dispatch => ({
   registerUser: (creds) => dispatch(registerUser(creds)),
   editUser: (_id, firstname, lastname, room, email, block, hostel, phone, facebookProfile, showfacebook, showphone, showroom) => dispatch(editUser(_id, firstname, lastname, room, email, block, hostel, phone, facebookProfile, showfacebook, showphone, showroom)),
   editPassword : (_id,username,password) => dispatch(editPassword(_id,username,password)),
+  editBid: (bidId,amount) => dispatch(editBid(bidId,amount)),
   postBid: (productId,bidderId,amount) => (dispatch(postBid(productId,bidderId,amount))),
-  freezeBid: (bidId) => (dispatch(freezeBid(bidId))),
   fetchFavorites: () => dispatch(fetchFavorites()),
   postFavorite: (productId) => dispatch(postFavorite(productId)),
-  deleteFavorite: (productId) => dispatch(deleteFavorite(productId))
+  deleteFavorite: (productId) => dispatch(deleteFavorite(productId)),
+  approveProduct: (productId) => dispatch(approveProduct(productId))
 });
 let username='';
 class Main extends Component {
@@ -76,9 +78,7 @@ class Main extends Component {
         }
       }
     }, 100);
-    if(this.props.auth.isAuthenticated&&this.props.auth.userinfo.admin){
       this.props.fetchUsers();
-    }
   }
   componentWillUnmount() {
     clearInterval(this.timer);
@@ -141,7 +141,11 @@ class Main extends Component {
           changeSelected={this.changeSelected}
           increaseView={this.props.increaseView}
           user={this.props.auth}
+          approveProduct={this.props.approveProduct}
           addToView={this.addToView}
+          postBid={this.props.postBid}
+          bids={this.props.bids}
+          editBid={this.props.editBid}
           favorite={
             this.props.auth.isAuthenticated?
             ((this.props.favorites.favorites===null) ? true : this.props.favorites.favorites.products.some((product) => product._id === match.params.productId))
@@ -166,6 +170,14 @@ class Main extends Component {
             );
         };
    
+        const HistoryWithId =({match}) =>{
+          let selectedProduct=this.props.products.products.filter((product)=>(product._id===(match.params.productId)))[0];          
+          return (<History
+                      bids={this.props.bids}
+                      auth={this.props.auth}
+                      product={selectedProduct}
+                     />);
+          }
         const OwnerProduct = ({match}) => {
           let selectedUser;
           let notFoundErr=null;
@@ -230,7 +242,7 @@ class Main extends Component {
           />
           <Switch location={this.props.location}>
                       <Route exact path='/home' component={() => <Home 
-                      products={this.props.products.products}
+                      products={this.props.products.products.filter((product)=>(product.approved))}
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
                       user={this.props.auth}
@@ -242,7 +254,7 @@ class Main extends Component {
                       postFavorite={this.props.postFavorite}
             />} />
                   <Route exact path='/search' component={() => <Search 
-                      products={this.props.products.products}
+                      products={this.props.products.products.filter((product)=>(product.approved))}
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
                       user={this.props.auth}
@@ -253,8 +265,24 @@ class Main extends Component {
                 />
 
                       <Route exact path='/books' component={() => <Products
-                      products={this.props.products.products.filter((product)=>(product.cat==="Books"))}
+                      products={this.props.products.products.filter((product)=>(product.cat==="Books"&&product.approved))}
                       title="Books"
+                      productsLoading={this.props.products.isLoading}
+                      productsErrMess={this.props.products.errMess}
+                      user={this.props.auth}
+                      toggleEditModal={this.toggleEditModal}
+                      toggleDeleteModal={this.toggleDeleteModal}
+                      changeSelected={this.changeSelected}
+                      favorites={
+                        this.props.auth.isAuthenticated?
+                        (this.props.favorites.favorites)
+                        : false
+                      }
+                      postFavorite={this.props.postFavorite}
+/>}/>
+<PrivateRouteAdmin exact path='/pending' component={() => <Products
+                      products={this.props.products.products.filter((product)=>(!product.approved))}
+                      title="Pending Products"
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
                       user={this.props.auth}
@@ -287,7 +315,7 @@ class Main extends Component {
 />}/>
                       
                       <Route exact path='/stationary' component={() => <Products
-                      products={this.props.products.products.filter((product)=>(product.cat==="Stationary"))}
+                      products={this.props.products.products.filter((product)=>(product.cat==="Stationary"&&product.approved))}
                       title="Stationary"
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
@@ -304,7 +332,7 @@ class Main extends Component {
 />}/>
 
 <Route exact path='/electronics' component={() => <Products
-                      products={this.props.products.products.filter((product)=>(product.cat==="Electronic Gadgets"))}
+                      products={this.props.products.products.filter((product)=>(product.cat==="Electronic Gadgets"&&product.approved))}
                       title="Electronic Gadgets"
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
@@ -321,7 +349,7 @@ class Main extends Component {
 />}/>
 
 <Route exact path='/bicycles' component={() => <Products
-                      products={this.props.products.products.filter((product)=>(product.cat==="Bicycles"))}
+                      products={this.props.products.products.filter((product)=>(product.cat==="Bicycles"&&product.approved))}
                       title="Bicycles"
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
@@ -338,7 +366,7 @@ class Main extends Component {
 />}/>
 
 <Route exact path='/clothes' component={() => <Products
-                      products={this.props.products.products.filter((product)=>(product.cat==="Clothes"))}
+                      products={this.props.products.products.filter((product)=>(product.cat==="Clothes"&&product.approved))}
                       title="Clothes"
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
@@ -355,7 +383,7 @@ class Main extends Component {
 />}/>
 
 <Route exact path='/sports' component={() => <Products
-                      products={this.props.products.products.filter((product)=>(product.cat==="Sports"))}
+                      products={this.props.products.products.filter((product)=>(product.cat==="Sports"&&product.approved))}
                       title="Sports"
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
@@ -372,7 +400,7 @@ class Main extends Component {
 />}/>
 
 <Route exact path='/others' component={() => <Products
-                      products={this.props.products.products.filter((product)=>(product.cat==="Others"))}
+                      products={this.props.products.products.filter((product)=>(product.cat==="Others"&&product.approved))}
                       title="Others"
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
@@ -404,12 +432,9 @@ class Main extends Component {
                       productsErrMess={this.props.products.errMess}
                       />
                       )}/>
-                {/*       <PrivateRoute exact path='/history' component={() => <History
-                      bids={this.props.bids}
-                      auth={this.props.auth}
-                     />}
-                      />
-                       <PrivateRouteAdmin exact path='/logs' component={() => <Log
+                       <PrivateRoute exact path='/bid_history/:productId' component={HistoryWithId}
+                />
+                {/*             <PrivateRouteAdmin exact path='/logs' component={() => <Log
                       bids={this.props.bids}
                      />}
                       />

@@ -84,6 +84,34 @@ export const increaseView = (_id,originalViews) => (dispatch) => {
 
 }
 
+export const approveProduct = (_id) => (dispatch) => {
+  const bearer = 'Bearer ' + localStorage.getItem('token');
+  return fetch(baseUrl + 'products/approve/' + _id, {
+      method: "POST",
+      headers: {
+        'Authorization': bearer
+      }
+    //  ,     credentials: 'same-origin'
+    })
+  .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    },
+    error => {
+          throw error;
+    })
+  .then(response => response.json())
+  .then(response => (dispatch(editProductdispatch(response))))
+  .catch(error =>  {  
+  alert('Your product could not be edited\nError: '+error.message); });
+  }
+
+
 export const editProduct = (_id,name, cat, description, price, bid, max_bid, incr, images) => (dispatch) => {
 
   const newProduct = {
@@ -437,6 +465,7 @@ export const postBid = (productId,bidderId,amount) => (dispatch) => {
     bidder: bidderId,
     amount: amount 
     };
+    console.log(newBid);
     const bearer = 'Bearer ' + localStorage.getItem('token');
     return fetch(baseUrl + 'bids', {
         method: "POST",
@@ -445,7 +474,7 @@ export const postBid = (productId,bidderId,amount) => (dispatch) => {
           "Content-Type": "application/json",
           'Authorization': bearer
         }
-     //   ,        credentials: "same-origin"
+        ,        credentials: "same-origin"
     })
     .then(response => {
         if (response.ok) {
@@ -466,7 +495,7 @@ export const postBid = (productId,bidderId,amount) => (dispatch) => {
       alert('Product could not be bidd\nError: '+error.message+'\n'); });
 };
 
-export const freezeBid = (bidId) => (dispatch) => {
+export const editBid = (bidId,amount) => (dispatch) => {
   const bearer = 'Bearer ' + localStorage.getItem('token');
   return fetch(baseUrl + 'bids/' + bidId, {
       method: "PUT"
@@ -475,7 +504,7 @@ export const freezeBid = (bidId) => (dispatch) => {
         "Content-Type": "application/json",
         'Authorization': bearer
       } ,
-    body : JSON.stringify({sold: true})})
+    body : JSON.stringify({amount: amount})})
   .then(response => {
       if (response.ok) {
         return response;
@@ -490,10 +519,10 @@ export const freezeBid = (bidId) => (dispatch) => {
     })
   .then(response => response.json())
   .then(response => { 
-    alert('Product returned successfully');
+    alert('Bit edited successfully');
     return dispatch(freezeProductdispatch(response));})
   .catch(error =>  {  
-  alert('The product could not be returned\nError: '+error.message); });
+  alert('Bid could not be edited\nError: '+error.message); });
 };
 
 export const fetchBids = () => (dispatch) => {

@@ -1,12 +1,13 @@
 import React,{Component} from 'react';
 import {Row,Col, Card, CardText, CardHeader, CardFooter, CardBody, Carousel,
-    CarouselItem,
-    CarouselControl,
+    CarouselItem, Button, Modal, ModalBody, ModalHeader, CardLink,
+    CarouselControl, Form, FormGroup, Label,Input,
     CarouselIndicators} from 'reactstrap';
 import Loading from './LoadingComponent';
 import {Link} from 'react-router-dom';
-function RenderProduct({product,toggleEditModal,changeSelected,user,favorite,postFavorite}) {
-    if (product != null)
+function RenderProduct({toggleModal,product,toggleEditModal,toggleBidEdit,changeSelected,user,favorite,postFavorite, approveProduct,bids}) {
+  let reqBid=bids.filter((bid)=>(bid.product._id===product._id));  
+  if (product != null)
         return(
         <Card>
        
@@ -34,7 +35,69 @@ function RenderProduct({product,toggleEditModal,changeSelected,user,favorite,pos
               <b> Email of owner : </b> {product.owner.email} <br/><br/>
               <b>Descrption: </b><br/> {product.description} <br/><br/>
               <b>Approved by admin: </b><br/> {product.approved?'Yes':'No'} <br/><br/>
-              <b> No. of Views: </b> <br/> {product.views} <br/>
+              <b> No. of Views: </b> <br/> {product.views} <br/><br/>
+              <b> Highest bid: </b> <br/>  {reqBid[0]?<React.Fragment>&#8377; {reqBid[0].amount}</React.Fragment>: 'No bids yet'} <br/>
+              {
+                (user.userinfo&&user.userinfo.admin&&!product.approved?
+                  (
+                    <div className="text-center">
+                    <br/>
+                    <Button color="success" onClick={()=>{
+                      approveProduct(product._id);
+                    }}>Approve <i className="fa fa-check"/></Button>
+                    </div>
+      
+                  )
+                  :
+                  (
+                    <React.Fragment/>
+                  )
+                  )
+              }
+              {
+                (user.userinfo&&!user.userinfo.admin&&product.approved&&product.owner._id===user.userinfo._id?
+                  (
+                    <div className="text-center">
+                    <br/>
+                    <CardLink tag={Link} to={`/bid_history/${product._id}`}>
+                    <Button color="warning" >View bid history <i className="fa fa-history"/></Button>
+                    </CardLink>
+                    </div>
+      
+                  )
+                  :
+                  (
+                    <React.Fragment/>
+                  )
+                  )
+              }
+              {
+                (user.userinfo&&!user.userinfo.admin&&product.owner._id!==user.userinfo._id&&product.bid?
+                  (
+                    (reqBid.some((bid)=>(bid.bidder._id===user.userinfo._id))
+                    ?
+                    (
+                      <React.Fragment>
+                      <br/>
+                      <b> My bid: </b> <br/>&#8377; {reqBid.filter((bid)=>(bid.bidder._id===user.userinfo._id&&bid.product._id===product._id))[0].amount} &nbsp; &nbsp;&nbsp; &nbsp; 
+                      <span className="fa fa-pencil Option" onClick={()=>{toggleBidEdit(reqBid.filter((bid)=>(bid.bidder._id===user.userinfo._id&&bid.product._id===product._id))[0]);}}/>  <br/><br/>
+                      </React.Fragment>
+                    )
+                    :(<div className="text-center">
+                    <br/>
+                    <Button color="warning" onClick={()=>{
+                      toggleModal();
+                    }}>Bid <i className="fa fa-dollar"/></Button>
+                    </div>
+                    )
+                    )
+                  )
+                  :
+                  (
+                    <React.Fragment/>
+                  )
+                  )
+              }
       </CardText><br/>
         </CardBody>
         <CardFooter className="text-muted">
@@ -57,10 +120,17 @@ function RenderProduct({product,toggleEditModal,changeSelected,user,favorite,pos
 
 var items=[];
 class ProductDetail extends Component {
-
     constructor(props){
         super(props);
-        this.state = { activeIndex: 0 };
+        
+        this.state = { activeIndex: 0
+        ,         isModalOpen: false,
+        bidEdit: false,
+        amount: 0,
+        oldBid: ''
+      };
+      this.toggleModal=this.toggleModal.bind(this);
+      this.toggleBidEdit=this.toggleBidEdit.bind(this);
         this.next = this.next.bind(this);
         this.previous = this.previous.bind(this);
         this.goToIndex = this.goToIndex.bind(this);
@@ -81,11 +151,27 @@ class ProductDetail extends Component {
     
     }
   
+    toggleModal() {
+      this.setState({
+        isModalOpen: !this.state.isModalOpen
+      });
+    }
+
+    toggleBidEdit(bid) {
+      this.setState({
+        bidEdit: !this.state.bidEdit
+      });
+      this.setState({oldBid: bid});
+      this.setState({amount: bid.amount});
+    }
+
     componentDidMount() {
         window.scrollTo(0, 0);
         if(this.props.product&&this.props.user.isAuthenticated){
                 this.props.increaseView(this.props.product._id,this.props.product.views);
           }
+        if(this.props.product)
+          this.setState({amount: this.props.product.price});
       }
 
       onExiting() {
@@ -114,8 +200,17 @@ class ProductDetail extends Component {
       }
 
 render(){
+
     const { activeIndex } = this.state;
- 
+    let bidOptions=[];
+    if(this.props.product&&this.props.product.bid){
+      let times=(this.props.product.max_bid-this.props.product.price)/(this.props.product.incr);
+      for(let i=0; i<=times; i++)
+      {
+        bidOptions.push(<option>{this.props.product.price+i*this.props.product.incr}</option>);
+      }
+    }
+    
     const slides = items.map((item) => {
         return (
           <CarouselItem
@@ -130,7 +225,7 @@ render(){
         );
       });
 
-    if (this.props.isLoading) {
+    if (this.props.isLoading||this.props.bids.isLoading) {
     return(
         <div className="container">
             <div className="row">            
@@ -142,7 +237,7 @@ render(){
 else if (this.props.errMess) {
     return(
         <div className="container loading">
-            <div className="row heading"> 
+            <div className="row heading white-text"> 
                 <div className="col-12">
                     <br/><br/><br/><br/>
                     <h3>{this.props.errMess}</h3>
@@ -150,6 +245,18 @@ else if (this.props.errMess) {
             </div>
         </div>
     );
+}
+else if (this.props.bids.errMess) {
+  return(
+      <div className="container loading">
+          <div className="row heading white-text"> 
+              <div className="col-12">
+                  <br/><br/><br/><br/>
+                  <h3>{this.props.bids.errMess}</h3>
+              </div>
+          </div>
+      </div>
+  );
 }
 else
     return(
@@ -182,10 +289,78 @@ else
                     changeSelected={this.props.changeSelected}
                     user={this.props.user}
                     postFavorite={this.props.postFavorite}
-                    favorite={this.props.favorite}>
+                    favorite={this.props.favorite}
+                    approveProduct={this.props.approveProduct}
+                    toggleModal={this.toggleModal}
+                    bids={this.props.bids.bids}
+                    toggleBidEdit={this.toggleBidEdit}
+                    >    
               </RenderProduct>
-
         <br/>
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+                     <ModalHeader toggle={this.toggleModal}>
+                         Bid for a product
+                     </ModalHeader>
+                     <ModalBody>
+                        <Form onSubmit={(e)=>{
+                          e.preventDefault();
+                          this.props.postBid(this.props.product._id,this.props.user.userinfo._id,this.state.amount)
+                        }}>
+                            <FormGroup>
+                                <Label htmlFor="username">Username of bidder</Label>
+                                <Input type="text" id="username" name="username"
+                                    value={(this.props.user.user?this.props.user.user.username:'')}
+                                    disabled />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="product">Name of product</Label>
+                                <Input type="product" id="product" name="product"
+                                  value={this.props.product.name}
+                                  disabled />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="amount">Amount you want to bid (in &#8377;) :</Label>
+                                <Input type="select" name="amount" id="amount" value={this.state.amount}
+                                onChange={(e)=>{this.setState({amount: e.target.value})}}>
+                                    {bidOptions}
+                                  </Input>
+                                </FormGroup>
+                            <Button type="submit" value="submit" color="warning">Bid</Button>
+                        </Form>
+                    </ModalBody>
+                     </Modal>
+                     <Modal isOpen={this.state.bidEdit} toggle={this.toggleBidEdit}>
+                     <ModalHeader toggle={this.toggleBidEdit}>
+                         Edit your Bid
+                     </ModalHeader>
+                     <ModalBody>
+                        <Form onSubmit={(e)=>{
+                          e.preventDefault();
+                          this.props.editBid(this.state.oldBid._id,this.state.amount)
+                        }}>
+                            <FormGroup>
+                                <Label htmlFor="username">Username of bidder</Label>
+                                <Input type="text" id="username" name="username"
+                                    value={(this.props.user.user?this.props.user.user.username:'')}
+                                    disabled />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="product">Name of product</Label>
+                                <Input type="product" id="product" name="product"
+                                  value={this.props.product.name}
+                                  disabled />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="amount">Amount you want to bid (in &#8377;) :</Label>
+                                <Input type="select" name="amount" id="amount" value={this.state.amount}
+                                onChange={(e)=>{this.setState({amount: e.target.value})}}>
+                                    {bidOptions}
+                                  </Input>
+                                </FormGroup>
+                            <Button type="submit" value="submit" color="warning">Bid</Button>
+                        </Form>
+                    </ModalBody>
+                     </Modal>
           </div>
         </div>
       </div>
