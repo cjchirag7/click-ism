@@ -43,7 +43,7 @@ export const postProduct = (name, cat, description, price, bid, max_bid, incr, i
             throw error;
       })
     .then(response => response.json())
-    .then(response => { alert('Product added successfully');
+    .then(response => { alert('Product uploaded successfully.\nPending for approval by admin.');
       return  dispatch(addProduct(response));})
     .catch(error =>  { alert('Your product could not be added\nError: '+error.message); });
 };
