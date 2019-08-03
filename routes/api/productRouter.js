@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose=require('mongoose');
@@ -5,11 +6,35 @@ const productRouter = express.Router();
 const authenticate=require('../../authenticate');
 const cors = require('../cors');
 const Products=require('../../models/products');
+var aws = require('aws-sdk');
+var multerS3 = require('multer-s3');
 var multer = require('multer');
+
+
+aws.config.update({
+    secretAccessKey: process.env.AWSSecretKey,
+    accessKeyId: process.env.AWSAccessKeyId,
+    region: 'us-east-2'
+});
+
+var s3 = new aws.S3();
 
 productRouter.use(bodyParser.json());
 
-var storage = multer.diskStorage(
+var storage= multerS3({
+    s3: s3,
+    bucket: 'click-ism',
+    metadata: function (req, file, cb) {
+      cb(null, {fieldName: file.fieldname});
+    },
+    key: function (req, file, cb) {
+      filenameSplit=file.originalname.split(".");
+      cb(null, filenameSplit[0]+Date.now()+"."+filenameSplit[filenameSplit.length-1])
+    },
+    acl: 'public-read'
+  })
+
+/*var storage = multer.diskStorage(
     {
       destination: (req, file, cb) => {
           cb(null, './client/public/uploads/');
@@ -20,7 +45,7 @@ var storage = multer.diskStorage(
           cb(null, filenameSplit[0]+Date.now()+"."+filenameSplit[filenameSplit.length-1])
       }
     }  
-  );
+  );*/
 
 // File filter
 const imageFileFilter = (req, file, cb) => {
@@ -50,8 +75,8 @@ productRouter.route('/')
     console.log(req.files);
     console.log(req.file);
     console.log(req.body);
-    Products.create({...req.body,images: [(req.files[0]?'client/public/uploads/'+req.files[0].filename:''),
-    (req.files[1]?'client/public/uploads/'+req.files[1].filename:''),(req.files[2]?'client/public/uploads/'+req.files[2].filename:''),(req.files[3]?'client/public/uploads/'+req.files[3].filename:'')],
+    Products.create({...req.body,images: [(req.files[0]?'client/public/uploads/'+req.files[0].key:''),
+    (req.files[1]?'client/public/uploads/'+req.files[1].key:''),(req.files[2]?'client/public/uploads/'+req.files[2].key:''),(req.files[3]?'client/public/uploads/'+req.files[3].key:'')],
     owner: req.user._id})
     .then((product)=>{
         Products.findById(product._id)

@@ -74,7 +74,7 @@ class ProductDetail extends Component {
             items.push({
                 id: i,
               altText: this.props.product.images[i].slice(22),
-              src: ('/uploads/'+this.props.product.images[i].slice(22))
+              src: ('https://click-ism.s3.us-east-2.amazonaws.com/'+this.props.product.images[i].slice(22))
             })
         }
       }
