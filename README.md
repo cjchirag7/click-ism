@@ -45,6 +45,8 @@ all users will be able to see that product online. This is to ensure that no fak
 * **username**: *cjchirag7*
 * **password**: *cool1234*
 
+3. When a user logs in and views the detail of a product, the number of views of that product increases by 1. In this way, the top 3 products with the maximum number of views are displayed on the home page.
+
 ## View live App
 
 Hosted at **https://click-ism.herokuapp.com/**
