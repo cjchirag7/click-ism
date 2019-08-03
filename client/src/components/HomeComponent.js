@@ -81,7 +81,7 @@ class Home extends Component {
             favorite=false;
           else
             favorite=this.props.favorites.products.some((p) => p._id === product._id);
-            return (<div className="col-12 col-md-4">
+            return (<div className="col-12 col-md-4 mt-2 mb-2">
           <Card>
         <CardImg top width="100%" height="200"  src={'https://click-ism.s3.us-east-2.amazonaws.com/'+product.images[0].slice(22)} 
         onMouseOver={e => {
@@ -160,9 +160,8 @@ class Home extends Component {
           <div className="col-12">
           <h3 align="center">Featured Products</h3>
           </div>
-          <div className="card-deck">
+          
           {(this.props.productsLoading)?(<Loading />):((this.props.productsErrMess)?(<h3>{this.props.productsErrMess}</h3>):featuredCards)}
-          </div>
           </div>
           </div>
         );

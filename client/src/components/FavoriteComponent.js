@@ -81,9 +81,7 @@ class Favorites extends Component{
                     </div>
                 </div>
                 <div className="row">
-                <div className="card-deck">
             {favorites}
-            </div>
                 </div>
             </div>
         );

@@ -68,9 +68,7 @@ class Products extends Component {
               )
               :
               (
-                <div className="card-deck">
-                {(this.props.productsLoading)?(<Loading />):((this.props.productsErrMess)?(<h3>{this.props.productsErrMess}</h3>):productsCards)}
-                </div>
+                (this.props.productsLoading)?(<Loading />):((this.props.productsErrMess)?(<h3>{this.props.productsErrMess}</h3>):productsCards)
     
               )
             }
