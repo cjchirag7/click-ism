@@ -4,7 +4,7 @@
 }
 
 body{
-    background: url(images/wallpaper.jpeg) no-repeat center center fixed;
+    background: url('images/black_checks.jpg') no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
@@ -28,10 +28,18 @@ font-weight: bold;
     margin: auto;
   }
 
-.darkbg{
+
+  .home{
+      background-image: url('./images/black_checks.jpg');
+      min-height: 100vh;
+      min-width: 99vw;
+    }
+
+  .darkbg{
       background-color: rgb(236, 56, 80);
       opacity: 0.7;
       color: white;
+      size: 4rem;
   }
 
   table, th, td {

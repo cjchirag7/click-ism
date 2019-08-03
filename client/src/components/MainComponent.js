@@ -167,9 +167,14 @@ class Main extends Component {
         };
    
         const OwnerProduct = ({match}) => {
-          console.log(match.params.productId);
-          let selectedUser=this.props.products.products.filter((product) => ((product._id)===(match.params.productId)))[0].owner;
+          let selectedUser;
           let notFoundErr=null;
+          
+          let selectedProduct=this.props.products.products.filter((product) => ((product._id)===(match.params.productId)))[0];
+          if(selectedProduct)
+            selectedUser=selectedProduct.owner;
+          else 
+             notFoundErr=("\n\n Error 404 :  User not found");  
           if(selectedUser===undefined){
           notFoundErr=("\n\n Error 404 :  User not found");
           }  
