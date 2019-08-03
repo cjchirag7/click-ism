@@ -15,34 +15,20 @@
   "author": "Chirag Jain",
   "license": "ISC",
   "dependencies": {
-<<<<<<< HEAD
     "aws-sdk": "^2.503.0",
     "body-parser": "^1.19.0",
     "concurrently": "^4.1.1",
     "cors": "^2.8.5",
     "dotenv": "^8.0.0",
     "ejs": "^2.6.2",
-=======
-    "body-parser": "^1.19.0",
-    "concurrently": "^4.1.1",
-    "cors": "^2.8.5",
->>>>>>> a4058728a085ad992362a84607641960fef702fa
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.6.7",
     "multer": "^1.4.2",
-<<<<<<< HEAD
     "multer-s3": "^2.9.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local-mongoose": "^5.0.1"
-=======
-    "passport": "^0.4.0",
-    "passport-jwt": "^4.0.0",
-    "passport-local-mongoose": "^5.0.1",
-    "react-redux-form": "^1.16.14",
-    "react-router-dom": "^5.0.1"
->>>>>>> a4058728a085ad992362a84607641960fef702fa
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
