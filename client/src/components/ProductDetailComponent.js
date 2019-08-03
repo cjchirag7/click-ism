@@ -28,8 +28,8 @@ function RenderProduct({product,toggleEditModal,changeSelected,user,favorite,pos
         <CardBody>
           
           <CardText>
-              <b> Category: </b> {product.cat} <br/><br/>
-              {product.bid?(<React.Fragment><b>Minimum Increment in bidding price :</b> <span>&#8377;</span> {product.incr}</React.Fragment>):<React.Fragment/>}<br/><br/>
+              <b> Category: </b> {product.cat} 
+              {product.bid?(<React.Fragment><br/><br/><b>Minimum Increment in bidding price :</b> <span>&#8377;</span> {product.incr}</React.Fragment>):<React.Fragment/>}<br/><br/>
               <b> Owner : </b> <Link to={`${product._id}/owner`}>{product.owner.firstname+' '+product.owner.lastname}</Link> <br/><br/>
               <b> Email of owner : </b> {product.owner.email} <br/><br/>
               <b>Descrption: </b><br/> {product.description} <br/><br/>

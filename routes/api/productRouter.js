@@ -75,7 +75,7 @@ productRouter.route('/')
     console.log(req.files);
     console.log(req.file);
     console.log(req.body);
-    Products.create({...req.body,images: [(req.files[0]?'client/public/uploads/'+req.files[0].key:''),
+    Products.create({...req.body,images: [(req.files[0])?'client/public/uploads/'+req.files[0].key:'client/public/uploads/Not_available.jpg',
     (req.files[1]?'client/public/uploads/'+req.files[1].key:''),(req.files[2]?'client/public/uploads/'+req.files[2].key:''),(req.files[3]?'client/public/uploads/'+req.files[3].key:'')],
     owner: req.user._id})
     .then((product)=>{

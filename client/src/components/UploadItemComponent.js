@@ -81,8 +81,20 @@ render(){
     </div>
     <div className="row row-content justify-content-center">
     <LocalForm onSubmit={(values) => {
-        var input = document.querySelector('input[type="file"]');
-        this.props.postProduct(values.name, values.cat, values.description, values.price, values.bid, values.max_bid, values.incr,input.files);
+        
+        if((values.bid&&(values.max_bid>values.price)&&(values.incr<=(values.max_bid-values.price)/2))||(!values.bid))
+        {
+            var input = document.querySelector('input[type="file"]');
+            this.props.postProduct(values.name, values.cat, values.description, values.price, values.bid, values.max_bid, values.incr,input.files);            
+        }
+        else if(values.max_bid<values.price)
+        {
+          alert('Maximum price should be greater than the minimum price');
+        }
+        else {
+          alert('Incremental price can be at most half the range of bidding');
+        }
+
     }}>
                     <Row className="form-group">
                                 <Label htmlFor="name" md={2}>Name </Label>

@@ -99,9 +99,19 @@ class Main extends Component {
         }
 
       handleSubmitEdit(values) {
+        if((values.bid&&(values.max_bid>values.price)&&(values.incr<=(values.max_bid-values.price)/2))||(!values.bid))
+        {
         this.toggleEditModal();
         this.props.editProduct(this.state.selectedProduct._id,values.name, values.cat, values.description, values.price, values.bid, values.max_bid, values.incr, values.images);     
         }
+        else if(values.max_bid<values.price)
+        {
+          alert('Maximum price should be greater than the minimum price');
+        }
+        else {
+          alert('Incremental price can be at most half the range of bidding');
+        }
+      }
     
     changeSelected(_id){
       this.setState({selectedProduct:this.props.products.products.filter((product)=>(product._id===_id))[0]});
