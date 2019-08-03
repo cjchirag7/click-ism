@@ -54,7 +54,7 @@ render(){
           <h5> Username : {'          '+this.props.user.username}</h5>
           {this.props.user.showroom?(<h5> Address : {'Room No.          '+this.props.user.block+'-'+this.props.user.room+ ', '+this.props.user.hostel}</h5>):(<React.Fragment/>)}
           {this.props.user.showphone?(<h5> Contact No. : {'  +91-'+this.props.user.phone}</h5>):(<React.Fragment/>)}
-          {this.props.user.showfacebook?(<h5> Facebook Profile Link : <a href={'https://www.facebook.com/'+this.props.facebookProfile}><span className="fa fa-facebook"></span></a></h5>):(<React.Fragment/>)}       
+          {this.props.user.showfacebook?(<h5> Facebook Profile Link : <a href={'https://www.facebook.com/'+this.props.user.facebookProfile}><span className="fa fa-facebook"></span></a></h5>):(<React.Fragment/>)}       
           </CardText>
         </CardBody>
           </Card>
