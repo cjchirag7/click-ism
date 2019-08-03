@@ -361,7 +361,7 @@ export const loginUser = (creds) => (dispatch) => {
           localStorage.setItem('creds', JSON.stringify(creds));
           localStorage.setItem('viewed', JSON.stringify([]));
           localStorage.setItem('userinfo', JSON.stringify(response.userinfo));    
-          fetchFavorites();
+          setTimeout(()=>{fetchFavorites()},0);
           setTimeout(()=>{
             logoutUser();
             alert('Your JWT token has expired. \nPlease log in again to continue.');

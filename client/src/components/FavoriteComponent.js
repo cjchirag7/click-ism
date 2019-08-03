@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import {  Card, CardImg, CardText, CardBody,
     CardLink, CardTitle, CardSubtitle, Button } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -36,9 +36,14 @@ function RenderMenuItem({ product, deleteFavorite}) {
         ));
 }
 
-const Favorites = (props) => {
+class Favorites extends Component{
 
-    if (props.favorites.isLoading) {
+    componentDidMount() {
+        window.scrollTo(0, 0)
+      }
+      
+    render(){
+    if (this.props.favorites.isLoading) {
         return(
             <div className="container">
                 <div className="row heading white-text">
@@ -47,25 +52,25 @@ const Favorites = (props) => {
             </div>
         );
     }
-    else if (props.favorites.errMess) {
+    else if (this.props.favorites.errMess) {
         return(
             <div className="container full">
                 <div className="row heading white-text">
-                    <h4>{props.favorites.errMess}</h4>
+                    <h4>{this.props.favorites.errMess}</h4>
                 </div>
             </div>
         )
     }
-    else if (props.favorites.favorites&&props.favorites.favorites.products) {
+    else if (this.props.favorites.favorites&&this.props.favorites.favorites.products) {
 
-        const favorites = props.favorites.favorites.products.map((product) => {
+        const favorites = this.props.favorites.favorites.products.map((product) => {
             return (
                 <div key={product._id} className="col-12 col-md-4 white-text">
-                    <RenderMenuItem product={product} deleteFavorite={props.deleteFavorite} />
+                    <RenderMenuItem product={product} deleteFavorite={this.props.deleteFavorite} />
                 </div>
             );
         });
-        console.log(props.favorites);
+        console.log(this.props.favorites);
         return(
 
             <div className="container full">
@@ -84,7 +89,7 @@ const Favorites = (props) => {
         );
     }
     else {
-        console.log(props.favorites);
+        console.log(this.props.favorites);
         return(
             <div className="container full">
                 <div className="row heading white-text justify-content-center">
@@ -93,6 +98,7 @@ const Favorites = (props) => {
             </div>
         )
     }
+}
 }
 
 export default Favorites;

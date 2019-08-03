@@ -67,6 +67,7 @@ class ProductDetail extends Component {
         this.onExiting = this.onExiting.bind(this);
         this.onExited = this.onExited.bind(this);
         items=[];
+        if(this.props.product){
         let imageArr=this.props.product.images.filter((name)=>(!!name));
         for(let i=0; i<imageArr.length; i++)
         {
@@ -76,7 +77,7 @@ class ProductDetail extends Component {
               src: ('/uploads/'+this.props.product.images[i].slice(22))
             })
         }
-    
+      }
     
     }
   

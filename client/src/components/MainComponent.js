@@ -8,6 +8,7 @@ import ProductDetail from './ProductDetailComponent';
 import UserDetail from './UserDetailComponent';
 import Profile from './ProfileComponent';
 import Favorites from './FavoriteComponent';
+import UploadItem from './UploadItemComponent';
 import {Switch,Route,Redirect, withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {Modal,ModalBody,ModalHeader,Button, Label, Col, Row} from 'reactstrap';
@@ -52,19 +53,40 @@ const mapDispatchToProps = dispatch => ({
   postFavorite: (productId) => dispatch(postFavorite(productId)),
   deleteFavorite: (productId) => dispatch(deleteFavorite(productId))
 });
-
+let username='';
 class Main extends Component {
   
   componentDidMount() {
     this.props.fetchProducts();
-    if(this.props.auth.isAuthenticated){
-      this.props.fetchBids();
-      this.props.fetchFavorites();
-    }
+    this.timer = setInterval(() => {
+      if(this.props.auth.isAuthenticated){
+        let Newusername='';
+        if(username==='')
+        {
+          this.props.fetchBids();
+        this.props.fetchFavorites();
+          username=this.props.auth.user.username;
+        console.log("1. "+username+Newusername);
+        }
+        Newusername=this.props.auth.user.username;
+        console.log("2. "+username+Newusername); 
+        if(username!==Newusername)
+        {
+        username=Newusername;
+        this.props.fetchBids();
+        this.props.fetchFavorites();
+        console.log("3. "+username+Newusername);
+        }
+      }
+    }, 200);
     if(this.props.auth.isAuthenticated&&this.props.auth.userinfo.admin){
       this.props.fetchUsers();
     }
   }
+  componentWillUnmount() {
+    clearInterval(this.timer);
+    this.timer = null;
+}
     constructor(props){
         super(props);
         this.state={
@@ -163,7 +185,7 @@ class Main extends Component {
         )} />
       );
 
-   /*   const PrivateRouteAdmin = ({ component: Component, ...rest }) => (
+      const PrivateRouteAdmin = ({ component: Component, ...rest }) => (
         <Route {...rest} render={(props) => (
           this.props.auth.isAuthenticated&&this.props.auth.userinfo.admin
             ? <Component {...props} />
@@ -184,7 +206,7 @@ class Main extends Component {
               }} />
         )} />
       );
-*/
+
       let uniqueName= (defaultName)=>(val) =>(!this.props.products.products.some((product)=>(product.name===val))||(val===defaultName))
 
     return ( 
@@ -344,19 +366,15 @@ class Main extends Component {
                       editUser={this.props.editUser} 
                       editPassword={this.props.editPassword}/>}
                       />
-                  {/*     <PrivateRouteAdmin exact path='/add_product' component={() =>{
-                      <AddProduct
+                      <PrivateRoute exact path='/upload_product' component={() =>(
+                      <UploadItem
                       isAdmin={(this.props.auth.userinfo==null)?false:(this.props.auth.userinfo.admin)}
                       postProduct={this.props.postProduct}
                       products={this.props.products.products}
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
                       />
-                      }>*/}
-{/*                      <PrivateRoute exact path='/profile' component={() => <Profile
-                      auth={this.props.auth}
-                      editUser={this.props.editUser} />}
-/>*/}
+                      )}/>
                 {/*       <PrivateRoute exact path='/history' component={() => <History
                       bids={this.props.bids}
                       auth={this.props.auth}
