@@ -253,6 +253,23 @@ class Main extends Component {
                       }
                       postFavorite={this.props.postFavorite}
 />}/>
+
+<PrivateRoute exact path='/uploads' component={() => <Products
+                      products={this.props.products.products.filter((product)=>(product.owner._id===this.props.auth.userinfo._id))}
+                      title="My Uploads"
+                      productsLoading={this.props.products.isLoading}
+                      productsErrMess={this.props.products.errMess}
+                      user={this.props.auth}
+                      toggleEditModal={this.toggleEditModal}
+                      toggleDeleteModal={this.toggleDeleteModal}
+                      changeSelected={this.changeSelected}
+                      favorites={
+                        this.props.auth.isAuthenticated?
+                        (this.props.favorites.favorites)
+                        : false
+                      }
+                      postFavorite={this.props.postFavorite}
+/>}/>
                       
                       <Route exact path='/stationary' component={() => <Products
                       products={this.props.products.products.filter((product)=>(product.cat==="Stationary"))}
