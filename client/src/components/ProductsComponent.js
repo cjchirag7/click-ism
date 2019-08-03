@@ -61,9 +61,19 @@ class Products extends Component {
             <div className="col-12">
             <h3 align="center">{this.props.title}</h3>
             </div>
-            <div className="card-deck">
-            {(this.props.productsLoading)?(<Loading />):((this.props.productsErrMess)?(<h3>{this.props.productsErrMess}</h3>):productsCards)}
-            </div>
+            {
+              (this.props.products.length===1)?
+              (
+                (this.props.productsLoading)?(<Loading />):((this.props.productsErrMess)?(<h3>{this.props.productsErrMess}</h3>):productsCards)    
+              )
+              :
+              (
+                <div className="card-deck">
+                {(this.props.productsLoading)?(<Loading />):((this.props.productsErrMess)?(<h3>{this.props.productsErrMess}</h3>):productsCards)}
+                </div>
+    
+              )
+            }
             </div>
             </div>
            

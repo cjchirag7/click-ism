@@ -66,19 +66,16 @@ class Main extends Component {
           this.props.fetchBids();
         this.props.fetchFavorites();
           username=this.props.auth.user.username;
-        console.log("1. "+username+Newusername);
-        }
+         }
         Newusername=this.props.auth.user.username;
-        console.log("2. "+username+Newusername); 
         if(username!==Newusername)
         {
         username=Newusername;
         this.props.fetchBids();
         this.props.fetchFavorites();
-        console.log("3. "+username+Newusername);
         }
       }
-    }, 200);
+    }, 100);
     if(this.props.auth.isAuthenticated&&this.props.auth.userinfo.admin){
       this.props.fetchUsers();
     }

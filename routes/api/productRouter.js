@@ -47,6 +47,9 @@ productRouter.route('/')
 })
 
 .post(cors.corsWithOptions,authenticate.verifyUser,upload.array('images',4),(req, res, next) => {
+    console.log(req.files);
+    console.log(req.file);
+    console.log(req.body);
     Products.create({...req.body,images: [(req.files[0]?'client/public/uploads/'+req.files[0].filename:''),
     (req.files[1]?'client/public/uploads/'+req.files[1].filename:''),(req.files[2]?'client/public/uploads/'+req.files[2].filename:''),(req.files[3]?'client/public/uploads/'+req.files[3].filename:'')],
     owner: req.user._id})

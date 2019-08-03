@@ -7,18 +7,25 @@ export const addProduct = (product) => ({
 });
 
 export const postProduct = (name, cat, description, price, bid, max_bid, incr, images) => (dispatch) => {
-    const newProduct = {
-      name: name, cat: cat,
-       description: description, price: price,
-        max_bid: max_bid, bid: bid, 
-        incr: incr, images: images
-    };
+  let newProduct = new FormData();
+  newProduct.append('name', name);
+  newProduct.append('cat', cat);
+  newProduct.append('price', price);
+  newProduct.append('bid', bid);
+  if(max_bid)
+            newProduct.append('max_bid', max_bid);
+  if(incr)
+            newProduct.append('incr', incr);
+  newProduct.append('description', description);
+  newProduct.append('images', images[0]);  
+  newProduct.append('images', images[1]);  
+  newProduct.append('images', images[2]);  
+  newProduct.append('images', images[3]);  
     const bearer = 'Bearer ' + localStorage.getItem('token');
     return fetch(baseUrl + 'products', {
         method: "POST",
-        body: JSON.stringify(newProduct),
+        body: newProduct,
         headers: {
-          "Content-Type": "application/json",
           'Authorization': bearer
         }
      //   ,        credentials: "same-origin"
@@ -587,7 +594,7 @@ export const postFavorite = (productId) => (dispatch) => {
           throw error;
     })
   .then(response => response.json())
-  .then(favorites => { console.log('Favorite Added', favorites); dispatch(addFavorites(favorites)); })
+  .then(favorites => { dispatch(addFavorites(favorites)); })
   .catch(error => dispatch(favoritesFailed(error.message)));
 }
 
@@ -615,7 +622,7 @@ export const deleteFavorite = (productId) => (dispatch) => {
           throw error;
     })
   .then(response => response.json())
-  .then(favorites => { console.log('Favorite Deleted', favorites); dispatch(addFavorites(favorites)); })
+  .then(favorites => { dispatch(addFavorites(favorites)); })
   .catch(error => dispatch(favoritesFailed(error.message)));
 };
 
