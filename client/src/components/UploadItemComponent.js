@@ -6,7 +6,6 @@ import Loading from './LoadingComponent';
 
 const required = (val) => val && val.length;
 const requiredNum = (val) => !!(val);
-const maxLength = (len) => (val) => !(val) || (val.length <= len);
 const minLength = (len) => (val) => (val) && (val.length >= len);
 const maxVal = (len) => (val) => !(val) || (val<= len);
 const minVal = (len) => (val) => (val) && (val>= len);

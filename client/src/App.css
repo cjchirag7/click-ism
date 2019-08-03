@@ -28,18 +28,10 @@ font-weight: bold;
     margin: auto;
   }
 
-
-  .home{
-      background-image: url('./images/wallpaper.jpeg');
-      min-height: 100vh;
-      min-width: 99vw;
-    }
-
-  .darkbg{
+.darkbg{
       background-color: rgb(236, 56, 80);
       opacity: 0.7;
       color: white;
-      size: 4rem;
   }
 
   table, th, td {
@@ -54,9 +46,9 @@ font-weight: bold;
       margin-top: 60px;
   }
 
-  .full{
+/*  .full{
       min-height: 100vh;
-  }
+  }*/
 
   .Option{
       cursor: pointer;
