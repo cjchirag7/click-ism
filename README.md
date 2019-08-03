@@ -64,6 +64,7 @@ Hosted at **https://click-ism.herokuapp.com/**
 
 * [Redux](https://redux.js.org/basics/usage-with-react) - For flux architecture, and fetching rapidly data
 * [Mongoose](https://mongoosejs.com/docs/guide.html) - ODM for MongoDB
+* [AWS S3](https://console.aws.amazon.com/s3/) - Cloud server to store the images
 
 ## Steps followed to setup the project
 
