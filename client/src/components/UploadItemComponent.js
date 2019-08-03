@@ -107,7 +107,7 @@ render(){
                                 </Col>
                                 <Label htmlFor="cat" md={2}>Category</Label>
                                  <Col md={4}>
-                            <Control.select model=".cat" id="cat" className="form-control" defaultValue="Stationary">
+                            <Control.select model=".cat" name="cat" id="cat" className="form-control" defaultValue="Stationary">
                               <option>Stationary</option> <option>Electronic Gadgets</option>
                               <option>Bicycles</option> <option>Clothes</option>
                               <option>Sports</option> <option>Books</option> 
