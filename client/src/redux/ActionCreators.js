@@ -597,6 +597,7 @@ export const logoutUser = () => (dispatch) => {
   localStorage.removeItem('creds');  
   localStorage.removeItem('userinfo');  
   localStorage.removeItem('viewed');
+  localStorage.removeItem('timer');
   dispatch(receiveLogout())
 }
 
