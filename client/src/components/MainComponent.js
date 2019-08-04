@@ -76,7 +76,7 @@ class Main extends Component {
         this.props.fetchFavorites();
         }
       }
-    }, 100);
+    }, 1000);
       this.props.fetchUsers();
   }
   componentWillUnmount() {

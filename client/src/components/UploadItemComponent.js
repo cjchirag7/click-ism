@@ -37,15 +37,9 @@ class UploadItem extends Component {
  
     componentDidMount() {
         window.scrollTo(0, 0)
- //  if(document.getElementsByName('images'))
-   //     document.getElementsByName('images')[0].addEventListener('change',fileAdder);
     }
 
-    componentWillUnmount()
-    {
-     //   document.getElementsByName('images')[0].removeEventListener('change',fileAdder);
-    }
-
+   
 render(){
     let uniqueName=(val) =>(!this.props.products.some((product)=>(product.name===val)));
 

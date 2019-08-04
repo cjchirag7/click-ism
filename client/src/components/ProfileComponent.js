@@ -2,9 +2,9 @@ import React,{Component} from 'react';
 import {Card,CardBody,CardHeader,Label,Row,Col,InputGroupAddon,CardText,Button,Modal,ModalBody,ModalHeader,FormGroup} from 'reactstrap';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 
-const required = (val) => val && val.length;
-const maxLength = (len) => (val) => !(val) || (val.length <= len);
-const minLength = (len) => (val) => (val) && (val.length >= len);
+const required = (val) => {return val && val.toString().length};
+const maxLength = (len) => (val) => {return !(val) || (val.toString().length <= len);}
+const minLength = (len) => (val) => (val) && (val.toString().length >= len);
 const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);
 const matchcreds = (original) => (val) =>  (val===original);
 const ifminLength = (len) => (val) => !(val) || (val.length >= len);

@@ -248,7 +248,7 @@ class Header extends Component{
                                facebookProfile: values.facebookProfile,
                                firstname: values.firstname,
                                lastname: values.lastname });
-                              }}>
+                           }}>
                             <FormGroup>
                                 <Label htmlFor="username">Username</Label>
                                 <Control.text model=".username" id="username" name="username" 
@@ -284,6 +284,7 @@ class Header extends Component{
                               <option>Topaz</option> <option>Sapphire</option>
                               <option>Diamond</option> <option>Emerald</option>
                               <option>Ruby</option> <option>Rosaline</option>
+                              <option>Opal</option>
                             </Control.select>
                             </FormGroup>
                             <FormGroup>
@@ -338,21 +339,21 @@ class Header extends Component{
                             <Col md={4}>
                             <FormGroup check inline>                            
                             <Control.checkbox model=".showroom" id="showroom" name="showroom" 
-                            className="form-control"/>
+                            className="form-control" defaultValue={false}/>
                             <Label check> Room Info</Label>
                             </FormGroup>
                             </Col>
                             <Col md={4}>
                             <FormGroup check inline>
                             <Control.checkbox model=".showphone" id="showphone" name="showphone" 
-                            className="form-control"/>
+                            className="form-control" defaultValue={false}/>
                             <Label check htmlFor="showphone"> Contact No.</Label>
                             </FormGroup>
                             </Col>
                             <Col md={4}>
                             <FormGroup check inline>
                             <Control.checkbox model=".showfacebook" id="showfacebook" name="showfacebook" 
-                            className="form-control"/>
+                            className="form-control" defaultValue={false}/>
                             <Label check htmlFor="showfacebook"> Facebook Profile</Label>
                             </FormGroup>
                             </Col>

@@ -8,12 +8,12 @@ function RenderMenuItem({ product, deleteFavorite}) {
     return(
         (
         <Card className="mt-2 mb-2">
-      <CardImg top width="100%" height="200"  src={'/uploads/'+product.images[0].slice(22)}
+      <CardImg top width="100%" height="200"  src={'https://click-ism.s3.us-east-2.amazonaws.com/'+product.images[0].slice(22)}
        onMouseOver={e => {
         if(product.images[1])
-        e.currentTarget.src = '/uploads/'+product.images[1].slice(22)}} 
+        e.currentTarget.src = 'https://click-ism.s3.us-east-2.amazonaws.com/'+product.images[1].slice(22)}} 
         onMouseOut={e => {
-          e.currentTarget.src = '/uploads/'+product.images[0].slice(22)}}   
+          e.currentTarget.src = 'https://click-ism.s3.us-east-2.amazonaws.com/'+product.images[0].slice(22)}}   
       />
 
       <CardBody className="text-black">
