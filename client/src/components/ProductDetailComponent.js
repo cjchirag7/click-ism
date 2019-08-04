@@ -267,6 +267,7 @@ else
               {
                 `.custom-tag {
                     max-width: 100vw;
+                    max-height: 700px;
                   }`
               }
             </style>

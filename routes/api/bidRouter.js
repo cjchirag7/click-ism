@@ -68,10 +68,16 @@ bidRouter.route('/')
                 }
             else {
              Bid.create(req.body)
-                .then((product)=>{
-                    res.statusCode=200;
-                    res.setHeader('Content-Type','application/json');
-                    res.json(product);
+                .then((bid_unpopulated)=>{
+                    Bid.findById(bid_unpopulated._id)
+                    .populate('bidder')
+                    .populate('product')
+                    .then((bid)=>{
+                        res.statusCode=200;
+                        res.setHeader('Content-Type','application/json');
+                        res.json(bid);    
+                    },(err)=>(next(err)))
+                    .catch((err)=>(next(err)))
                 },(err)=>(next(err)))
                 .catch((err)=>(next(err))) 
             }
