@@ -81,14 +81,14 @@ render(){
     <div className="row row-content justify-content-center">
     <LocalForm onSubmit={(values) => {
         
-        if((values.bid&&(values.max_bid>values.price)&&(values.incr<=(values.max_bid-values.price)/2))||(!values.bid))
+        if((values.bid&&(Number(values.max_bid)>Number(values.price))&&(Number(values.incr)<=Number(values.max_bid-values.price)/2))||(!values.bid))
         {
             var input = document.querySelector('input[type="file"]');
             this.props.postProduct(values.name, values.cat, values.description, values.price, values.bid, values.max_bid, values.incr,input.files);            
         }
-        else if(values.max_bid<values.price)
+        else if(Number(values.max_bid)<Number(values.price))
         {
-          alert('Maximum price should be greater than the minimum price');
+        alert('Maximum price should be greater than the minimum price');
         }
         else {
           alert('Incremental price can be at most half the range of bidding');
