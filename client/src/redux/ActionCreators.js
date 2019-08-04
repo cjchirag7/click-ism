@@ -221,7 +221,7 @@ showroom: showroom
     localStorage.setItem('userinfo', JSON.stringify(response));
     return dispatch(editUserdispatch(response));})
   .catch(error =>  {  
-  alert('Your profile could not be edited\nError: '+error.message+'\n May be someone has already registered with that Email ID or your JWT token has expired (Trying to LogOut and LogIn again may help)'); });
+  alert('Your profile could not be edited\nError: '+error.message+'\n May be someone has already registered with that Email ID or username'); });
 };
 
 export const deleteProduct = (_id) => (dispatch) => {
@@ -391,9 +391,11 @@ export const loginUser = (creds) => (dispatch) => {
   .then(response => response.json())
   .then(response => {
       if (response.success) {
+        const time_to_login = Date.now() + 3600000;
           // If login was successful, set the token in local storage
           localStorage.setItem('token', response.token);
           localStorage.setItem('creds', JSON.stringify(creds));
+          localStorage.setItem('timer',JSON.stringify(time_to_login));
           localStorage.setItem('viewed', JSON.stringify([]));
           localStorage.setItem('userinfo', JSON.stringify(response.userinfo));    
           setTimeout(()=>{fetchFavorites()},0);
@@ -401,6 +403,7 @@ export const loginUser = (creds) => (dispatch) => {
             logoutUser();
             alert('Your JWT token has expired. \nPlease log in again to continue.');
            },3600*1000);
+          // },25*1000); 
           // Dispatch the success action
           dispatch(receiveLogin(response));
       

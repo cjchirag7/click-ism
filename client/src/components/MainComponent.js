@@ -61,6 +61,10 @@ class Main extends Component {
   componentDidMount() {
     this.props.fetchProducts();
     this.props.fetchBids();
+    const timer = JSON.parse(localStorage.getItem('timer'));
+    if (timer && (Date.now() > timer)) {
+      logoutUser();
+     }
     this.timer = setInterval(() => {
       if(this.props.auth.isAuthenticated){
         let Newusername='';
