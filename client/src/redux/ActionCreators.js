@@ -221,7 +221,7 @@ showroom: showroom
     localStorage.setItem('userinfo', JSON.stringify(response));
     return dispatch(editUserdispatch(response));})
   .catch(error =>  {  
-  alert('Your profile could not be edited\nError: '+error.message+'\n May be someone has already registered with that Email ID'); });
+  alert('Your profile could not be edited\nError: '+error.message+'\n May be someone has already registered with that Email ID or your JWT token has expired (Trying to LogOut and LogIn again may help)'); });
 };
 
 export const deleteProduct = (_id) => (dispatch) => {
