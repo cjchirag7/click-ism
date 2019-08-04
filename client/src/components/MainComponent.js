@@ -60,20 +60,19 @@ class Main extends Component {
   
   componentDidMount() {
     this.props.fetchProducts();
+    this.props.fetchBids();
     this.timer = setInterval(() => {
       if(this.props.auth.isAuthenticated){
         let Newusername='';
         if(username==='')
         {
-          this.props.fetchBids();
-        this.props.fetchFavorites();
+                 this.props.fetchFavorites();
           username=this.props.auth.user.username;
          }
         Newusername=this.props.auth.user.username;
         if(username!==Newusername)
         {
         username=Newusername;
-        this.props.fetchBids();
         this.props.fetchFavorites();
         }
       }

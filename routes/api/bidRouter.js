@@ -16,7 +16,7 @@ bidRouter.use(bodyParser.json());
 
 bidRouter.route('/')
 .options(cors.corsWithOptions, (req, res) => { res.sendStatus(200); })
-.get(cors.corsWithOptions, authenticate.verifyUser,
+.get(cors.corsWithOptions, 
                   function(req, res, next) {
                     Bid.find({})
                     .populate('bidder')
