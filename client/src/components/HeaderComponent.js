@@ -189,7 +189,7 @@ class Header extends Component{
                                         </Button>
                                         :
                                         <div>
-                                        <div className="navbar-text text-warning mr-1">{this.props.auth.user.username}</div>
+                                        <div className="navbar-text text-warning mr-1">{this.props.auth.user && this.props.auth.user.username}</div>
                                         <Button outline color="warning" onClick={this.handleLogout}>
                                             <span className="fa fa-sign-out fa-lg"></span> Logout
                                             {this.props.auth.isLoading ?

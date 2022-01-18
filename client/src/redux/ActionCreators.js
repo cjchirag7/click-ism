@@ -173,7 +173,7 @@ export const editPassword = (_id,username,password) => (dispatch) => {
 .then(response => { 
   let newCreds={username: username, password: password};
   localStorage.removeItem('creds');
-  localStorage.setItem('creds', JSON.st0ringify(newCreds));
+  localStorage.setItem('creds', JSON.stringify(newCreds));
   alert('Password changed successfully');
   return dispatch(editPasswordDispatch(newCreds));})
 .catch(error =>  {  

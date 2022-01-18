@@ -42,7 +42,7 @@ all users will be able to see that product online. This is to ensure that no fak
 
 2. You can also register yourself as a student and then login to view the options available to a student or use the following credentials:
 
-* **username**: *cjchirag7*
+* **username**: *cjchirag9*
 * **password**: *cool1234*
 
 3. When a user logs in and views the detail of a product, the number of views of that product increases by 1. In this way, the top 3 products with the maximum number of views are displayed on the home page.
