@@ -49,7 +49,7 @@ class History extends Component {
 render(){
     let reqBids;
     if(this.props.bids.bids&&this.props.product)
-       reqBids=this.props.bids.bids.filter((bid)=>(bid.product._id===this.props.product._id));
+       reqBids=this.props.bids.bids.filter((bid)=>(bid.product && (bid.product._id===this.props.product._id) ));
     if (this.props.bids.isLoading) {
         return(
             <div className="container">

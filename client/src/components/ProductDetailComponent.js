@@ -35,7 +35,7 @@ function RenderProduct({
   approveProduct,
   bids
 }) {
-  let reqBid = bids.filter(bid => bid.product._id === product._id);
+  let reqBid = bids.filter(bid => bid.product && (bid.product._id === product._id) );
   if (product != null)
     return (
       <Card>
