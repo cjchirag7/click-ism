@@ -2,6 +2,8 @@ const express=require('express');
 const mongoose=require('mongoose');
 const bodyParser=require('body-parser');
 const path=require('path');
+
+require('dotenv').config();
 var passport = require('passport');
 var authenticate = require('./authenticate');
 
@@ -27,8 +29,8 @@ app.use(function(req, res, next) {
 // Bodyparser Middleware
 app.use(bodyParser.json());
 
-// DB config 
-const mongoURI = require('./config/keys').mongoURI;
+// DB config
+const mongoURI = process.env.mongoURI;
 
 // Connect to mongo
 mongoose.connect(mongoURI,{ useNewUrlParser: true, useCreateIndex: true,useFindAndModify:false})
@@ -47,7 +49,7 @@ app.use('/api/favorites',favoriteRouter);
 if (process.env.NODE_ENV === 'production') {
     // Set static folder
     app.use(express.static('client/build'));
-  
+
     app.get('*', (req, res) => {
       res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
