@@ -301,7 +301,7 @@ class Main extends Component {
 />}/>
 
 <PrivateRoute exact path='/uploads' component={() => <Products
-                      products={this.props.products.products.filter((product)=>(product.owner._id===this.props.auth.userinfo._id))}
+                      products={this.props.products.products.filter((product)=>(product.owner && (product.owner._id===this.props.auth.userinfo._id)))}
                       title="My Uploads"
                       productsLoading={this.props.products.isLoading}
                       productsErrMess={this.props.products.errMess}
